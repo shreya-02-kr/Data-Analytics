@@ -1,0 +1,52 @@
+# analysing data types
+describe student_mh;
+# changing the table's name for better analysis
+alter table `student mental health`
+rename to student_mh;
+# change of column names
+
+alter table student_mh
+rename column `Choose your gender` to gender,
+rename column `What is your course?` to course,
+rename column `Your current year of Study` to study_year,
+rename column `What is your CGPA?` to CGPA,
+rename column `Marital status` to married,
+rename column `Do you have Depression?` to depressed,
+rename column `Do you have Anxiety?` to anxiety,
+rename column `Do you have Panic attack?` to panic_attacks,
+rename column `Did you seek any specialist for a treatment?` to lfor_treatment;
+# data formatting
+alter table student_mh
+add column timestamp_f timestamp;
+# some rows had seconds in data. To avoid errors add seconds to format
+
+update student_mh
+set timestamp_f = str_to_date(Timestamp, '%d/%m/%Y %H:%i:%s');
+# column grade is not fit for analysis. Let's divide and make an average number
+
+alter table student_mh
+add column grade float;
+
+update student_mh
+set grade = (substring_index(CGPA, ' - ', 1) + substring_index(CGPA, ' - ', -1)) / 2;
+# The students year of education think will better to transform from text to int to better calculation
+
+alter table student_mh
+add column study_year_f int;
+
+update student_mh
+set study_year_f = (substring_index(study_year, ' ', -1));
+# drop columns I won't use
+
+alter table student_mh
+drop column Timestamp;
+
+alter table student_mh
+drop column study_year;
+
+alter table student_mh
+drop column CGPA;
+# glimpse at what profession interviewers studying
+
+select distinct course
+from student_mh;
