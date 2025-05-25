@@ -1,1 +1,2 @@
 # Data-Analytics
+This project focuses on leveraging data analytics to gain a deeper understanding of mental health trends, contributing factors, and potential insights for interventions. In an increasingly complex world, mental well-being is a critical aspect of public health. By analyzing relevant datasets, this project aims to identify patterns, correlations, and anomalies that can inform research, policy-making, and individual awareness regarding mental health.
