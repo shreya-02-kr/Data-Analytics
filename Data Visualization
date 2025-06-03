@@ -1,0 +1,45 @@
+plt.figure(figsize=(10,10))
+plt.hist(df['Age'],color='b')
+plt.title("Age distribution");
+df.rename(columns = {'Choose your gender': 'gender'}, inplace = True)
+plt.figure(figsize=(12,6))
+plt.title("gender distribution")
+g = plt.pie(df.gender.value_counts(), explode=(0.025,0.025), labels=df.gender.value_counts().index, colors=['skyblue','navajowhite'],autopct='%1.1f%%', startangle=180);
+plt.legend()
+plt.show()
+
+plt.figure(figsize=(10,10))
+sns.countplot(df['Your current year of Study'],hue=df['gender'])
+plt.title("Students studyig in particular year");
+plt.figure(figsize=(10,10))
+sns.countplot(df['Do you have Anxiety?'],hue=df['Do you have Depression?'])
+plt.title("Students studyig in particular year");
+plt.show()
+
+plt.figure(figsize=(10,10))
+sns.set_theme(style="darkgrid")
+ax = sns.countplot(y="Do you have Anxiety?", hue="gender", data=df)
+plt.title("Anxiety by Gender")
+plt.show()
+plt.figure(figsize=(10,10))
+sns.set_theme(style="darkgrid")
+ax = sns.countplot(y="Do you have Depression?", hue="gender", data=df)
+plt.title("Depression by Gender")
+plt.show()
+
+plt.figure(figsize=(10,10))
+sns.set_theme(style="darkgrid")
+ax = sns.countplot(x="Do you have Anxiety?", hue="Your current year of Study", data=df)
+plt.title("Anxiety by study year")
+plt.show()
+plt.figure(figsize=(10,10))
+sns.set_theme(style="darkgrid")
+ax = sns.countplot(x="Do you have Depression?", hue="Your current year of Study", data=df)
+plt.title("Depression by study year")
+plt.show()
+
+plt.figure(figsize=(10,10))
+sns.set_theme(style="darkgrid")
+ax = sns.countplot(x="Do you have Panic attack?", hue="What is your CGPA?", data=df)
+plt.title("Panic attack by CGPA")
+plt.show()
