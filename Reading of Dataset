@@ -1,0 +1,63 @@
+df = pd.read_csv('/kaggle/input/student-mental-health/Student Mental health.csv')
+df.head()
+Timestamp	Choose your gender	Age	What is your course?	Your current year of Study	What is your CGPA?	Marital status	Do you have Depression?	Do you have Anxiety?	Do you have Panic attack?	Did you seek any specialist for a treatment?
+0	8/7/2020 12:02	Female	18.0	Engineering	year 1	3.00 - 3.49	No	Yes	No	Yes	No
+1	8/7/2020 12:04	Male	21.0	Islamic education	year 2	3.00 - 3.49	No	No	Yes	No	No
+2	8/7/2020 12:05	Male	19.0	BIT	Year 1	3.00 - 3.49	No	Yes	Yes	Yes	No
+3	8/7/2020 12:06	Female	22.0	Laws	year 3	3.00 - 3.49	Yes	Yes	No	No	No
+4	8/7/2020 12:13	Male	23.0	Mathemathics	year 4	3.00 - 3.49	No	No	No	No	No
+df.shape
+(101, 11)
+df.dtypes
+Timestamp                                        object
+Choose your gender                               object
+Age                                             float64
+What is your course?                             object
+Your current year of Study                       object
+What is your CGPA?                               object
+Marital status                                   object
+Do you have Depression?                          object
+Do you have Anxiety?                             object
+Do you have Panic attack?                        object
+Did you seek any specialist for a treatment?     object
+dtype: object
+df.nunique()
+Timestamp                                       92
+Choose your gender                               2
+Age                                              7
+What is your course?                            49
+Your current year of Study                       7
+What is your CGPA?                               6
+Marital status                                   2
+Do you have Depression?                          2
+Do you have Anxiety?                             2
+Do you have Panic attack?                        2
+Did you seek any specialist for a treatment?     2
+dtype: int64
+df.isnull().sum()
+Timestamp                                       0
+Choose your gender                              0
+Age                                             1
+What is your course?                            0
+Your current year of Study                      0
+What is your CGPA?                              0
+Marital status                                  0
+Do you have Depression?                         0
+Do you have Anxiety?                            0
+Do you have Panic attack?                       0
+Did you seek any specialist for a treatment?    0
+dtype: int64
+df = df.dropna(how='any',axis=0) 
+df.isnull().sum()
+Timestamp                                       0
+Choose your gender                              0
+Age                                             0
+What is your course?                            0
+Your current year of Study                      0
+What is your CGPA?                              0
+Marital status                                  0
+Do you have Depression?                         0
+Do you have Anxiety?                            0
+Do you have Panic attack?                       0
+Did you seek any specialist for a treatment?    0
+dtype: int64
