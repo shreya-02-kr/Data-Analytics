@@ -1,0 +1,54 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, OneHotEncoder, OrdinalEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.feature_selection import SelectKBest, chi2, f_classif
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.feature_selection import RFE
+from sklearn.impute import SimpleImputer
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# --- 1. Load Data ---
+# Create a dummy dataset for demonstration
+np.random.seed(42)
+num_students = 1000
+
+data = {
+    'student_id': range(1, num_students + 1),
+    'age': np.random.randint(18, 25, num_students),
+    'gender': np.random.choice(['Male', 'Female', 'Non-binary'], num_students, p=[0.45, 0.5, 0.05]),
+    'study_hours_per_week': np.random.normal(25, 8, num_students).clip(0, 70).astype(int),
+    'gpa': np.random.normal(3.2, 0.5, num_students).clip(1.0, 4.0).round(2),
+    'sleep_hours_per_night': np.random.normal(6.5, 1.5, num_students).clip(3, 10).round(1),
+    'social_media_hours_daily': np.random.normal(3, 2, num_students).clip(0, 10).round(1),
+    'physical_activity_hours_week': np.random.normal(4, 3, num_students).clip(0, 20).round(1),
+    'family_support_score': np.random.randint(1, 6, num_students), # 1-5, low to high
+    'financial_stress': np.random.choice(['Low', 'Medium', 'High'], num_students, p=[0.5, 0.3, 0.2]),
+    'loneliness_score': np.random.randint(1, 11, num_students), # 1-10, low to high
+    'past_mental_health_treatment': np.random.choice(['Yes', 'No'], num_students, p=[0.2, 0.8]),
+    'counseling_sessions_last_month': np.random.randint(0, 5, num_students),
+    'major': np.random.choice(['Engineering', 'Arts', 'Science', 'Business', 'Education', 'Nursing'], num_students),
+    'international_student': np.random.choice(['Yes', 'No'], num_students, p=[0.15, 0.85]),
+    'living_arrangement': np.random.choice(['On-campus', 'Off-campus_alone', 'Off-campus_with_family'], num_students, p=[0.4, 0.3, 0.3]),
+    'self_esteem_score': np.random.normal(7, 1.5, num_students).clip(1, 10).round(1),
+    'extracurricular_activities': np.random.randint(0, 6, num_students),
+    # Target variables (hypothetically influenced by other features)
+    'anxiety_score': (np.random.normal(50, 15, num_students) -
+                      np.random.normal(data['sleep_hours_per_night'] * 3, 5) +
+                      np.random.normal(data['social_media_hours_daily'] * 2, 5) +
+                      np.random.normal((6 - data['family_support_score']) * 4, 5)).clip(0, 100).astype(int),
+    'depression_status': np.random.choice(['No', 'Yes'], num_students, p=[0.7, 0.3])
+}
+
+df = pd.DataFrame(data)
+
+# Introduce some missing values for demonstration
+for col in ['sleep_hours_per_night', 'gpa', 'social_media_hours_daily', 'financial_stress']:
+    df.loc[df.sample(frac=0.05).index, col] = np.nan
+
+print("Original Data Info:")
+df.info()
+print("\nFirst 5 rows of dummy data:")
+print(df.head())
