@@ -1,0 +1,23 @@
+Hypothetical Data Schema:
+Let's assume our raw dataset (student_mental_health.csv) contains the following columns:
+
+student_id: Unique identifier (Categorical/Nominal)
+age: Student's age (Numerical/Continuous)
+gender: (Categorical/Nominal: 'Male', 'Female', 'Non-binary')
+study_hours_per_week: (Numerical/Continuous)
+gpa: Grade Point Average (Numerical/Continuous)
+sleep_hours_per_night: (Numerical/Continuous)
+social_media_hours_daily: (Numerical/Continuous)
+physical_activity_hours_week: (Numerical/Continuous)
+family_support_score: (Numerical/Ordinal: e.g., 1-5, low to high)
+financial_stress: (Categorical/Ordinal: 'Low', 'Medium', 'High')
+loneliness_score: (Numerical/Ordinal: e.g., 1-10, low to high)
+past_mental_health_treatment: (Categorical/Binary: 'Yes', 'No')
+counseling_sessions_last_month: (Numerical/Discrete)
+anxiety_score: (Numerical/Continuous, target variable for regression or can be binned for classification)
+depression_status: (Categorical/Binary: 'No', 'Yes' - target variable for classification)
+major: (Categorical/Nominal: 'Engineering', 'Arts', 'Science', etc.)
+international_student: (Categorical/Binary: 'Yes', 'No')
+living_arrangement: (Categorical/Nominal: 'On-campus', 'Off-campus_alone', 'Off-campus_with_family')
+self_esteem_score: (Numerical/Continuous)
+extracurricular_activities: (Numerical/Discrete: count of activities)
