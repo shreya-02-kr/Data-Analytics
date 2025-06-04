@@ -1,0 +1,114 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats # For Z-score and Box-Cox transformation
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder, OneHotEncoder
+from sklearn.compose import ColumnTransformer # For applying different transformers to different columns
+from sklearn.pipeline import Pipeline # For chaining transformations
+
+# --- 1. Generate Synthetic Data (for demonstration purposes) ---
+# In a real project, you would load your data:
+# df = pd.read_csv('student_mental_health_data.csv')
+# df = pd.read_excel('student_mental_health_data.xlsx')
+
+np.random.seed(42) # for reproducibility
+
+data_size = 500
+
+# Simulate common student mental health related features
+data = {
+    'Student_ID': range(1, data_size + 1),
+    'Age': np.random.randint(18, 25, data_size),
+    'GPA': np.random.normal(3.0, 0.5, data_size), # Normally distributed GPA
+    'Sleep_Hours_Daily': np.random.normal(7, 1.5, data_size), # Generally normal, but will add outliers
+    'Stress_Level_Score': np.random.normal(50, 15, data_size), # Score out of 100
+    'Anxiety_Score': np.random.normal(30, 10, data_size), # Score out of 50
+    'Social_Support_Score': np.random.normal(7, 2, data_size), # Score out of 10
+    'Study_Hours_Weekly': np.random.normal(25, 8, data_size), # Hours spent studying
+    'Has_Therapy': np.random.choice(['Yes', 'No'], data_size, p=[0.15, 0.85]),
+    'Gender': np.random.choice(['Male', 'Female', 'Non-binary'], data_size, p=[0.48, 0.50, 0.02]),
+    'Major': np.random.choice(['STEM', 'Arts', 'Business', 'Humanities'], data_size, p=[0.4, 0.2, 0.2, 0.2])
+}
+
+df = pd.DataFrame(data)
+
+# Introduce some outliers manually for demonstration
+df.loc[df.sample(frac=0.01).index, 'Sleep_Hours_Daily'] = np.random.uniform(2, 4, int(data_size * 0.01)) # Very low sleep
+df.loc[df.sample(frac=0.01).index, 'Stress_Level_Score'] = np.random.uniform(90, 100, int(data_size * 0.01)) # Very high stress
+df.loc[df.sample(frac=0.01).index, 'Anxiety_Score'] = np.random.uniform(45, 50, int(data_size * 0.01)) # Very high anxiety
+df.loc[df.sample(frac=0.01).index, 'GPA'] = np.random.uniform(0.5, 1.5, int(data_size * 0.01)) # Very low GPA
+
+
+print("--- Original DataFrame Head ---")
+print(df.head())
+print("\n--- Original DataFrame Info ---")
+df.info()
+print("\n--- Original DataFrame Description ---")
+print(df.describe())
+
+# --- 2. Outlier Detection ---
+
+print("\n--- 2. Outlier Detection ---")
+
+# Identify numerical columns for outlier analysis
+numerical_cols = ['Age', 'GPA', 'Sleep_Hours_Daily', 'Stress_Level_Score', 'Anxiety_Score', 'Social_Support_Score', 'Study_Hours_Weekly']
+
+# Visualize potential outliers using Box Plots
+plt.figure(figsize=(15, 8))
+for i, col in enumerate(numerical_cols):
+    plt.subplot(2, 4, i + 1)
+    sns.boxplot(y=df[col])
+    plt.title(f'Box Plot of {col}')
+plt.tight_layout()
+plt.suptitle('Outlier Detection: Box Plots (Original Data)', y=1.02, fontsize=16)
+plt.show()
+
+# Method A: Z-score Method
+# Z-score measures how many standard deviations an element is from the mean.
+# Typically, a Z-score threshold of 2, 2.5, or 3 is used.
+print("\n--- Outlier Detection: Z-score Method (Threshold = 3) ---")
+for col in numerical_cols:
+    df[f'{col}_Zscore'] = np.abs(stats.zscore(df[col]))
+    outliers_zscore = df[df[f'{col}_Zscore'] > 3]
+    if not outliers_zscore.empty:
+        print(f"Column: {col} - Outliers (Z-score > 3): {len(outliers_zscore)} found")
+    else:
+        print(f"Column: {col} - No outliers found with Z-score > 3")
+df = df.drop(columns=[col for col in df.columns if '_Zscore' in col]) # Clean up temp columns
+
+# Method B: IQR (Interquartile Range) Method
+# IQR = Q3 - Q1
+# Upper Bound = Q3 + 1.5 * IQR
+# Lower Bound = Q1 - 1.5 * IQR
+# Any data point outside this range is considered an outlier.
+print("\n--- Outlier Detection: IQR Method (1.5 * IQR) ---")
+for col in numerical_cols:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    outliers_iqr = df[(df[col] < lower_bound) | (df[col] > upper_bound)]
+    if not outliers_iqr.empty:
+        print(f"Column: {col} - Outliers (IQR): {len(outliers_iqr)} found")
+    else:
+        print(f"Column: {col} - No outliers found with IQR method")
+
+
+# --- 3. Outlier Treatment ---
+
+print("\n--- 3. Outlier Treatment (Capping using IQR method) ---")
+
+# Create a copy for transformation to compare
+df_treated = df.copy()
+
+for col in numerical_cols:
+    Q1 = df_treated[col].quantile(0.25)
+    Q3 = df_treated[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Capping: Replace outliers with the upper/lower bound
+    df_treated[col] = np.where(df_treated[col] > upper_bound, upper_bound, df_treated
