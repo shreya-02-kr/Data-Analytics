@@ -1,18 +1,80 @@
-# Data-Analytics
-This project focuses on leveraging data analytics to gain a deeper understanding of mental health trends, contributing factors, and potential insights for interventions. In an increasingly complex world, mental well-being is a critical aspect of public health. By analyzing relevant datasets, this project aims to identify patterns, correlations, and anomalies that can inform research, policy-making, and individual awareness regarding mental health.
-This repository contains the data, analysis scripts, and visualizations for a data analytics project focused on understanding student mental health. Our goal is to explore patterns, potential risk factors, and insights related to student well-being through data-driven approaches.
-Student Mental health.csv:
-This is the primary dataset used for the analysis. It contains raw or minimally processed survey responses related to student mental health, including demographic information and various mental health indicators.
-DataSets:
-This directory is reserved for any additional datasets used in the project, such as external demographic data, academic performance records, or pre-processed versions of the main dataset, if applicable.
-Mental health.py:
-This is the main Python script for the project. It handles data loading (currently configured with synthetic data for demonstration, but easily switchable to your actual CSV), performs initial data exploration, and generates all the data visualizations. It also includes sections for outlier detection and data transformations, crucial steps in preparing mental health data for reliable analysis.
-age_distribution_histogram.png: A histogram illustrating the distribution of student ages.
-gender_distribution_piechart.png: A pie chart showing the proportion of different genders in the dataset.
-students_by_year_gender_countplot.png: A bar chart visualizing the number of students in each study year, grouped by gender.
-anxiety_vs_depression_countplot.png: A bar chart displaying the relationship between reported anxiety and depression levels.
-anxiety_by_gender_countplot.png: A bar chart depicting anxiety levels among different genders.
-depression_by_gender_countplot.png: A bar chart illustrating depression levels among different genders.
-anxiety_by_study_year_countplot.png: A bar chart showing anxiety levels across various years of study.
-depression_by_study_year_countplot.png: A bar chart illustrating depression levels across various years of study.
-panic_attack_by_cgpa_countplot.png: A bar chart exploring the relationship between panic attacks and CGPA categories.
+
+# 📊 Mental Health Trends in Students – Data Analytics Project
+
+### 🧠 A Data-Driven Exploration of Student Well-Being
+
+> This project leverages data analytics to gain insights into mental health patterns among students. We explore relationships between anxiety, depression, demographics, academic performance, and more to support awareness, policy-making, and interventions.
+
+
+## 📂 Project Structure
+
+
+graph TD
+    A[Student Mental Health.csv] --> B[Mental health.py]
+    B --> C[Data Cleaning & EDA]
+    C --> D[Visualization Outputs]
+    B --> E[Outlier Detection]
+    B --> F[Data Transformation]
+    subgraph Outputs
+        D1[age_distribution_histogram.png]
+        D2[gender_distribution_piechart.png]
+        D3[students_by_year_gender_countplot.png]
+        D4[anxiety_vs_depression_countplot.png]
+        D5[anxiety_by_gender_countplot.png]
+        D6[depression_by_gender_countplot.png]
+        D7[anxiety_by_study_year_countplot.png]
+        D8[depression_by_study_year_countplot.png]
+        D9[panic_attack_by_cgpa_countplot.png]
+    end
+    D --> D1 & D2 & D3 & D4 & D5 & D6 & D7 & D8 & D9
+
+
+## 📁 Dataset Description
+
+### 📌 Primary Dataset: `Student Mental health.csv`
+
+Demographics: Age, gender, year of study, CGPA
+Mental Health Indicators: Anxiety, depression, panic attacks
+Survey Responses: Binary or ordinal answers (e.g., Yes/No, High/Low)
+
+
+
+## 🧪 Analysis Pipeline
+
+1. Load & Clean Data
+2. Exploratory Data Analysis (EDA)
+3. Outlier & Anomaly Detection
+4. Transform Variables
+5. Generate Visual Insights
+6. Derive Patterns & Correlations
+
+
+### Anxiety & Depression Patterns
+
+| Chart                                                         | Description                                |
+| ------------------------------------------------------------- | ------------------------------------------ |
+| ![Anxiety vs Depression](anxiety_vs_depression_countplot.png) | Compare anxiety and depression frequencies |
+| ![Anxiety by Gender](anxiety_by_gender_countplot.png)         | Gender-wise breakdown of anxiety           |
+| ![Depression by Gender](depression_by_gender_countplot.png)   | Gender-wise breakdown of depression        |
+| ![Anxiety by Year](anxiety_by_study_year_countplot.png)       | Anxiety distribution by academic year      |
+| ![Depression by Year](depression_by_study_year_countplot.png) | Depression distribution by academic year   |
+| ![Panic Attack by CGPA](panic_attack_by_cgpa_countplot.png)   | CGPA category vs panic attack frequency    |
+
+
+## 📜 Technologies Used
+
+  Python (Pandas, Matplotlib, Plotly)
+  IDLE 
+  CSV Data Handling
+  Git for Version Control
+
+
+## 🧠 Future Enhancements
+
+* Sentiment analysis from open-ended responses
+* Time series analysis if longitudinal data is added
+* Correlation with sleep/activity data (if wearable data is integrated)
+* More granular modeling: logistic regression, clustering, etc.
+
+
+
